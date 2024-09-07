@@ -20,7 +20,7 @@ jobs:
 
       - name: Build and Publish
         run: |
-          cd https://github.com/zaheerdalmia/aspnetTestProject/tree/90cd13240c43e75442cce48ce2b604ae87af6bca/testzk  #  Navigate to the directory containing the .csproj file
+          cd C:\Projects\TestProjZaheer\testzk  #  Navigate to the directory containing the .csproj file
           dotnet publish -c Release -o ./publish
           
       - name: List files in publish directory
