@@ -18,7 +18,9 @@ jobs:
         with:
           dotnet-version: '6.x'  # or the version of .NET your application uses
 
-      - name: Build project
-        run: dotnet publish -c Release -o ./publish
+      - name: Build and Publish
+        run: |
+          cd C:\Projects\TestProjZaheer\testzk  # Navigate to the directory containing the .csproj file
+          dotnet publish -c Release -o ./publish
 
       
