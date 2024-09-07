@@ -22,7 +22,7 @@ jobs:
 
      
       - name: Build
-        run: dotnet build C:\Projects\TestProjZaheer\testzk\testzk.csproj --configuration Release
+        run: dotnet build C:/Projects/TestProjZaheer/testzk/testzk.csproj --configuration Release
 
       - name: Publish
-        run: dotnet publish C:\Projects\TestProjZaheer\testzk\testzk.csproj --configuration Release --output ./publish
+        run: dotnet publish C:/Projects/TestProjZaheer_Publish --configuration Release --output ./publish
