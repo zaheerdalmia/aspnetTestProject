@@ -21,11 +21,4 @@ jobs:
       - name: Build project
         run: dotnet publish -c Release -o ./publish
 
-      - name: Deploy to IIS
-        uses: appleboy/drone-scp@v1.14.1
-        with:
-          host: ${{ secrets.IIS_SERVER_IP }}
-          username: ${{ secrets.IIS_USERNAME }}
-          password: ${{ secrets.IIS_PASSWORD }}
-          source: ./publish/
-          target: /var/www/html/yourapp/
+      
