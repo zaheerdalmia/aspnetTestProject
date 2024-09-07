@@ -1,0 +1,7 @@
+C:\Projects\TestProjZaheer\testzk\obj\Release\net6.0\PubTmp\Out\testzk.exe
+C:\Projects\TestProjZaheer\testzk\obj\Release\net6.0\PubTmp\Out\appsettings.Development.json
+C:\Projects\TestProjZaheer\testzk\obj\Release\net6.0\PubTmp\Out\appsettings.json
+C:\Projects\TestProjZaheer\testzk\obj\Release\net6.0\PubTmp\Out\testzk.dll
+C:\Projects\TestProjZaheer\testzk\obj\Release\net6.0\PubTmp\Out\testzk.deps.json
+C:\Projects\TestProjZaheer\testzk\obj\Release\net6.0\PubTmp\Out\testzk.runtimeconfig.json
+C:\Projects\TestProjZaheer\testzk\obj\Release\net6.0\PubTmp\Out\testzk.pdb
