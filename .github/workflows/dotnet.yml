@@ -1,33 +1,31 @@
-name: .NET Core Desktop
+name: Deploy to IIS
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches:
+      - main  # or the branch you want to deploy
 
 jobs:
+  deploy:
+    runs-on: windows-latest
 
-  build:
-    runs-on: ubuntu-latest
-    
     steps:
-    - name: Check out code
-    - uses: actions/checkout@v4
-    
-    - name: Setup .Net 6
-      uses: actions/setup-dotnet@v1
-      with:
-          dotnet-version: 6.0.x
-          
-    - name: Restore dependencies
-      run: dotnet restore
-      
-    - name: Build
-      run: dotnet build --no-restore dt
-      
-    - name: Test
-      run: dotnet test -- no build -- verbosity normal
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Run automated tests
-      run: dotnet test --c Release --no build
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '6.x'  # or the version of .NET your application uses
+
+      - name: Build project
+        run: dotnet publish -c Release -o ./publish
+
+      - name: Deploy to IIS
+        uses: appleboy/drone-scp@v1.14.1
+        with:
+          host: ${{ secrets.IIS_SERVER_IP }}
+          username: ${{ secrets.IIS_USERNAME }}
+          password: ${{ secrets.IIS_PASSWORD }}
+          source: ./publish/
+          target: /var/www/html/yourapp/
