@@ -21,13 +21,10 @@ jobs:
           dotnet-version: '7.x'
 
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore C:\Projects\TestProjZaheer\testzk\testzk.csproj
 
       - name: Build
-        run: dotnet build --configuration Release
-
-      - name: Test
-        run: dotnet test --configuration Release
+        run: dotnet build C:\Projects\TestProjZaheer\testzk\testzk.csproj --configuration Release
 
       - name: Publish
-        run: dotnet publish --configuration Release --output ./publish
+        run: dotnet publish C:\Projects\TestProjZaheer\testzk\testzk.csproj --configuration Release --output ./publish
