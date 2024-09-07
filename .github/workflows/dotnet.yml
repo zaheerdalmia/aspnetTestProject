@@ -20,7 +20,7 @@ jobs:
 
       - name: Build and Publish
         run: |
-          cd C:\Projects\TestProjZaheer\testzk  # Navigate to the directory containing the .csproj file
+          cd C:\Projects\TestProjZaheer\testzk\testzk.csproj  # Navigate to the directory containing the .csproj file
           dotnet publish -c Release -o ./publish
 
       
