@@ -20,9 +20,7 @@ jobs:
         with:
           dotnet-version: '7.x'
 
-      - name: Restore dependencies
-        run: dotnet restore C:\Projects\TestProjZaheer\testzk\testzk.csproj
-
+     
       - name: Build
         run: dotnet build C:\Projects\TestProjZaheer\testzk\testzk.csproj --configuration Release
 
