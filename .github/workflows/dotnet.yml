@@ -23,13 +23,13 @@ jobs:
           dotnet-version: '6.0.x'
           
       - name: Restore
-        run: dotnet restore ./testzk.sln
+        run: dotnet restore testzk/testzk.csproj
         
       - name: Build
-        run: dotnet build ./testzk.sln --configuration Release --no-restore
+        run: dotnet build testzk/testzk.csproj --configuration Release --no-restore
         
       - name: Publish
-        run: dotnet publish ./testzk.sln --configuration Release --no-build --output '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}'
+        run: dotnet publish testzk/testzk.csproj --configuration Release --no-build --output '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}'
         
       - name: Deployment
         uses: azure/webapps-deploy@v2
