@@ -25,4 +25,4 @@ jobs:
         run: dotnet build testzk/testzk.csproj --configuration Release
 
       - name: Publish
-        run: dotnet publish testzk/testzk.csproj  --configuration Release --output ./publish
+        run: dotnet publish aspnetTestProjectPublish  --configuration Release --output ./publish
