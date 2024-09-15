@@ -1,39 +1,33 @@
-name: Publish 🚀
+name: Deploy to IIS
 
 on:
-  workflow_dispatch:
   push:
     branches:
-    - main
-
-env:
-  AZURE_WEBAPP_NAME: current-time-service
-  AZURE_WEBAPP_PACKAGE_PATH: "./publish"
+      - main
 
 jobs:
-  publish:
+  build:
     runs-on: ubuntu-latest
-    
     steps:
-      - uses: actions/checkout@v3
-      
+      - name: Checkout code
+        uses: actions/checkout@v2
+
       - name: Setup .NET
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v2
         with:
-          dotnet-version: '6.0.x'
-          
-      - name: Restore
-        run: dotnet restore testzk/testzk.csproj
-        
+          dotnet-version: '6.x'  # Adjust to your .NET version
+
       - name: Build
-        run: dotnet build testzk/testzk.csproj --configuration Release --no-restore
-        
+        run: dotnet build --configuration Release
+
       - name: Publish
-        run: dotnet publish testzk/testzk.csproj --configuration Release --no-build --output '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}'
-        
-      - name: Deployment
-        uses: azure/webapps-deploy@v2
+        run: dotnet publish --configuration Release --output ./publish
+
+      - name: Deploy to IIS
+        uses: easingthemes/ssh-deploy@v2
         with:
-          app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
-          package: "${{ env.AZURE_WEBAPP_PACKAGE_PATH }}"
+          ssh_host: ${{ secrets.IIS_SERVER_IP }}
+          ssh_username: ${{ secrets.IIS_SERVER_USER }}
+          ssh_key: ${{ secrets.IIS_SERVER_KEY }}
+          local_path: ./publish
+          remote_path: /path/to/your/site
