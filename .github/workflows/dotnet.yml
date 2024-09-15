@@ -23,8 +23,7 @@ jobs:
       - name: Publish
         run: dotnet publish testzk/testzk.csproj --configuration Release --output ./publish
 
-      - name: Deploy to IIS        
-        uses: easingthemes/ssh-deploy@v2
+      - name: Deploy to IIS 
         with:          
           server: ${{ 10.100.66.18 }}
           username: ${{ DALMIABHARAT\rpa-admin }}
