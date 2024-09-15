@@ -21,12 +21,4 @@ jobs:
         run: dotnet build testzk/testzk.csproj --configuration Release
 
       - name: Publish
-        run: dotnet publish testzk/testzk.csproj --configuration Release --output ./publish
-
-      - name: Deploy to IIS 
-        with:          
-          server: ${{ 10.100.66.18 }}
-          username: ${{ DALMIABHARAT\rpa-admin }}
-          password: ${{ Net#ork2022 }}
-          local-dir: D/Projects/Publish
-          remote-dir: C:/inetpub/wwwroot/TestProject
+        run: dotnet publish testzk/testzk.csproj --configuration Release --output ./publish     -
