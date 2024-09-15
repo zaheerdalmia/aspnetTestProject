@@ -25,9 +25,9 @@ jobs:
 
       - name: Deploy to IIS        
         uses: easingthemes/ssh-deploy@v2
-        with:
-          ssh_host: ${{ secrets.IIS_SERVER_IP }}
-          ssh_username: ${{ secrets.IIS_SERVER_USER }}
-          ssh_key: ${{ secrets.IIS_SERVER_KEY }}
-          local_path: ./publish
-          remote_path: /path/to/your/site
+        with:          
+          server: ${{ 10.100.66.18 }}
+          username: ${{ DALMIABHARAT\rpa-admin }}
+          password: ${{ Net#ork2022 }}
+          local-dir: D/Projects/Publish
+          remote-dir: C:/inetpub/wwwroot/TestProject
