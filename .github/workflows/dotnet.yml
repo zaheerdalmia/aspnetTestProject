@@ -5,7 +5,7 @@ on:
       - main
 
 jobs:
-  publish:
+  build-and-publish:
     runs-on: ubuntu-latest
     
     steps:
@@ -33,4 +33,29 @@ jobs:
         with:
           name: publish
           path: ./publish          
-      
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build-and-publish
+
+    steps:
+      - name: Download publish artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: publish
+
+      - name: Install msdeploy
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y unzip
+          wget https://download.microsoft.com/download/3/8/7/387C7CE5-2083-4A64-8C2B-4F63E48D5E1F/msdeploy_amd64_en-US.zip
+          unzip msdeploy_amd64_en-US.zip -d msdeploy
+          sudo mv msdeploy/msdeploy.exe /usr/local/bin/msdeploy
+          sudo chmod +x /usr/local/bin/msdeploy
+
+      - name: Deploy to IIS Server
+        run: |
+          msdeploy -source:package="./publish.zip" -dest:auto,ComputerName="https://${{ secrets.IIS_SERVER_URL }}/MsDeploy.axd",UserName="${{ secrets.IIS_USERNAME }}",Password="${{ secrets.IIS_PASSWORD }}",AuthType="Basic"
+        env:
+          IIS_SERVER_URL: ${{ secrets.IIS_SERVER_URL }}
+          IIS_USERNAME: ${{ secrets.IIS_USERNAME }}
+          IIS_PASSWORD: ${{ secrets.IIS_PASSWORD }}
