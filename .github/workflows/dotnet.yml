@@ -9,10 +9,10 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       
       - name: Setup .NET
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '6.0.x'
           
@@ -23,11 +23,14 @@ jobs:
         run: dotnet build testzk/testzk.csproj --configuration Release --no-restore
                  
       - name: Publish
-        run: dotnet publish testzk/testzk.csproj --configuration Release --no-build --output ./publish         
-          
-      - name: Deploy to IIS server
-        run: |
-          sshpass -p ${{ secrets.IIS_SERVER_PASSWORD }} ssh -o StrictHostKeyChecking=no ${{ secrets.IIS_SERVER_USER }}@${{ secrets.IIS_SERVER_IP }} << 'EOF'
-            cd C:\inetpub\wwwroot\TestProject
-            git pull origin main
-          EOF
+        run: dotnet publish testzk/testzk.csproj  --configuration Release --no-build --output ./publish 
+        
+      - name: List directory contents
+        run: ls -R ./publish  # Optional: List files in the publish directory for debugging
+
+      - name: Upload publish artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: publish
+          path: ./publish          
+      
