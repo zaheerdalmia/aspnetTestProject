@@ -28,8 +28,10 @@ jobs:
       - name: Publish
         run: dotnet publish testzk/testzk.csproj --configuration Release --no-build --output ./publish         
   
-      - name: List files in publish directory
-        run: ls -al ./publish  
+      - name: Create publish directory (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: New-Item -Path .\publish -ItemType Directory -Force
         
       - name: Deploy to IIS server
         run: |
