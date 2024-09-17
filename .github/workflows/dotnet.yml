@@ -1,4 +1,4 @@
-name: Deploy to IIS
+name: Publish Code
 on:
   push:
     branches:
