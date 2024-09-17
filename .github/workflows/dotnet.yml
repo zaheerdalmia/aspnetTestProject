@@ -1,14 +1,8 @@
-name: Publish 🚀
-
+name: Publish Code
 on:
-  workflow_dispatch:
   push:
     branches:
-    - main
-
-env:
-  AZURE_WEBAPP_NAME: current-time-service
-  AZURE_WEBAPP_PACKAGE_PATH: "./publish"
+      - main
 
 jobs:
   publish:
@@ -27,13 +21,13 @@ jobs:
         
       - name: Build
         run: dotnet build testzk/testzk.csproj --configuration Release --no-restore
-        
+                 
       - name: Publish
-        run: dotnet publish testzk/testzk.csproj --configuration Release --no-build --output '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}'
-        
-      - name: Deployment
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
-          package: "${{ env.AZURE_WEBAPP_PACKAGE_PATH }}"
+        run: dotnet publish testzk/testzk.csproj --configuration Release --no-build --output ./zkpublish         
+          
+      - name: Deploy to IIS server
+        run: |
+          sshpass -p ${{ secrets.IIS_SERVER_PASSWORD }} ssh -o StrictHostKeyChecking=no ${{ secrets.IIS_SERVER_USER }}@${{ secrets.IIS_SERVER_IP }} << 'EOF'
+            cd C:\inetpub\wwwroot\TestProject
+            git pull origin main
+          EOF
