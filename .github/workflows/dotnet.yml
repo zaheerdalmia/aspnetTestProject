@@ -23,4 +23,11 @@ jobs:
         run: dotnet build testzk/testzk.csproj --configuration Release --no-restore
         
       - name: Publish
-        run: dotnet publish testzk/testzk.csproj --configuration Release --no-build --output    -
+        run: dotnet publish testzk/testzk.csproj --configuration Release --no-build --output  
+          
+      - name: Deploy to IIS server
+        run: |
+          sshpass -p ${{ secrets.IIS_SERVER_PASSWORD }} ssh -o StrictHostKeyChecking=no ${{ secrets.IIS_SERVER_USER }}@${{ secrets.IIS_SERVER_IP }} << 'EOF'
+            cd C:\inetpub\wwwroot\TestProject
+            git pull origin main
+          EOF
