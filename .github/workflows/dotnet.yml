@@ -23,7 +23,7 @@ jobs:
         run: dotnet build testzk/testzk.csproj --configuration Release --no-restore
                  
       - name: Publish
-        run: dotnet publish testzk/testzk.csproj --configuration Release --no-build --output ./zkpublish         
+        run: dotnet publish testzk/testzk.csproj --configuration Release --no-build --output ./publish         
           
       - name: Deploy to IIS server
         run: |
