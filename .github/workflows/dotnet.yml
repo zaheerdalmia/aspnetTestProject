@@ -23,15 +23,13 @@ jobs:
         run: dotnet build testzk/testzk.csproj --configuration Release --no-restore
         
       - name: Create publish directory
-        run: New-Item -Path ./publish -ItemType Directory -Force
+        run: mkdir -p ./publish
           
       - name: Publish
         run: dotnet publish testzk/testzk.csproj --configuration Release --no-build --output ./publish         
   
-      - name: Create publish directory (Windows)
-        if: runner.os == 'Windows'
-        shell: pwsh
-        run: New-Item -Path .\publish -ItemType Directory -Force
+      - name: List files in publish directory
+        run: ls -al ./publish
         
       - name: Deploy to IIS server
         run: |
