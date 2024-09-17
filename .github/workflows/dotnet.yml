@@ -23,7 +23,7 @@ jobs:
         run: dotnet build testzk/testzk.csproj --configuration Release --no-restore
                  
       - name: Publish
-        run: dotnet publish https://github.com/zaheerdalmia/aspnetTestProject --configuration Release --no-build --output ./publish 
+        run: dotnet publish testzk/testzk.csproj  --configuration Release --no-build --output https://github.com/zaheerdalmia/aspnetTestProject/publish 
         
       - name: List directory contents
         run: ls -R ./publish  # Optional: List files in the publish directory for debugging
@@ -32,5 +32,5 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: publish
-          path: ./publish          
+          path: https://github.com/zaheerdalmia/aspnetTestProject/publish          
       
