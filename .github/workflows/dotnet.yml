@@ -43,8 +43,8 @@ jobs:
          with:
           website-name: 'YourWebsite'
           msdeploy-service-url: "https://rpasocldev.dalmiabharat.com/TestProject/"
-          msdeploy-username: ${{ secrets.MSDEPLOY_USERNAME }}
-          msdeploy-password: ${{ secrets.MSDEPLOY_PASSWORD }}
+          msdeploy-username: "DALMIABHARAT\rpa-admin"
+          msdeploy-password: "Net#ork2022"
           source-path: "./publish/*"
           
        - name: Restart IIS
