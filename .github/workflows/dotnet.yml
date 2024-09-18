@@ -43,7 +43,7 @@ jobs:
 
     steps:        
        - name: Deploy to IIS
-         uses: ChristopheLav/iis-deploy@v1
+         uses: zaheerdalmia/iis-deploy@v4
          with:
           website-name: 'YourWebsite'
           msdeploy-service-url: ${{ secrets.IIS_SERVER_IP }}
