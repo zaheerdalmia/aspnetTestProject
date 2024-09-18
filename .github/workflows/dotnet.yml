@@ -23,19 +23,19 @@ jobs:
         run: dotnet build testzk/testzk.csproj --configuration Release --no-restore
                  
       - name: Publish
-        run: dotnet publish testzk/testzk.csproj  --configuration Release --no-build --output ./publish 
+        run: dotnet publish testzk/testzk.csproj  --configuration Release --no-build --output testzk/publish 
         
       - name: List directory contents
-        run: ls -R ./publish  # Optional: List files in the publish directory for debugging
+        run: ls -R testzk/publish  # Optional: List files in the publish directory for debugging
                
       - name: Upload publish artifacts
         uses: actions/upload-artifact@v4
         with:
           name: publish
-          path: ./publish  
+          path: testzk/publish  
        
       - name: List Published Files
-        run: dir ./publish  
+        run: dir testzk/publish  
         
   deploy:
     runs-on: ubuntu-latest
@@ -49,7 +49,7 @@ jobs:
           msdeploy-service-url: ${{ secrets.IIS_SERVER_IP }}
           msdeploy-username: ${{ secrets.IIS_SERVER_PASSWORD }}  # Your username secret
           msdeploy-password: ${{ secrets.IIS_SERVER_USER }}  # Your password secret
-          source-path: "./publish/*"
+          source-path: "testzk/publish/*"
           
        - name: Restart IIS
          run: |
