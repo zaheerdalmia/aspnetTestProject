@@ -42,9 +42,9 @@ jobs:
          uses: ChristopheLav/iis-deploy@v1
          with:
           website-name: 'YourWebsite'
-          msdeploy-service-url: "https://rpasocldev.dalmiabharat.com/TestProject/"
-          msdeploy-username: "DALMIABHARAT\rpa-admin"
-          msdeploy-password: "Net#ork2022"
+          msdeploy-service-url: ${{ secrets.IIS_SERVER_IP }}
+          msdeploy-username: ${{ secrets.IIS_SERVER_PASSWORD }}  # Your username secret
+          msdeploy-password: ${{ secrets.IIS_SERVER_USER }}  # Your password secret
           source-path: "./publish/*"
           
        - name: Restart IIS
