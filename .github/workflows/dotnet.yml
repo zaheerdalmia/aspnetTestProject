@@ -41,12 +41,12 @@ jobs:
       - name: Copy files to IIS
         uses: appleboy/scp-action@master
         with:
-          host: ${{ secrets.IIS_SERVER_IP }}
-          username: ${{ secrets.IIS_USERNAME }}
-          password: ${{ secrets.IIS_PASSWORD }}
-          source: "./publish/*"
-          target: "C:/inetpub/wwwroot/TestProject/"  # Change to your IIS path
-
+          website-name: 'MyWebsite'
+          msdeploy-service-url: "https://rpasocldev.dalmiabharat.com/TestProject/"
+          msdeploy-username: ${{ secrets.IIS_SERVER_USER }}
+          msdeploy-password: ${{ secrets.IIS_SERVER_PASSWORD }}
+          source-path: "./publish/*"
+       
       - name: Restart IIS
         run: |
           Invoke-Expression -Command "Restart-WebAppPool -Name 'DefaultAppPool'" # Change app pool name
