@@ -45,10 +45,10 @@ jobs:
         uses: actions/download-artifact@v3
         with:
            name: publish
-           path: testzk/testzk.csproj/my-artifact.zip
+           path: testzk/testzk/my-artifact.zip
 
       - name: Publish to on-prem VM
         run: |
           net use D: \\10.100.66.18\artifacts /user:${{ secrets.IIS_SERVER_USER }} ${{ secrets.IIS_SERVER_PASSWORD }}
-          xcopy /Y /I build/output/my-artifact.zip Z:\
+          xcopy /Y /I testzk/testzk/my-artifact.zip Z:\
           net use D: /delete  
