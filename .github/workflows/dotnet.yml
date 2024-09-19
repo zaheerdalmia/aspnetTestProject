@@ -50,5 +50,20 @@ jobs:
       - name: Publish to on-prem VM
         run: |
           net use D: \\10.100.66.18\artifacts /user:${{ secrets.IIS_SERVER_USER }} ${{ secrets.IIS_SERVER_PASSWORD }}
-          xcopy /Y /I  D:\a\aspnetTestProject\aspnetTestProject\testzk\testzk\my-artifact.zip Z:\
-          net use D: /delete  
+          
+          # Check if the artifact exists
+          if exist D:\a\aspnetTestProject\aspnetTestProject\testzk\testzk\my-artifact.zip (
+            echo "Artifact exists"
+          ) else (
+            echo "Artifact does not exist"
+            exit 1
+          )
+      
+          # Extract the Artifact
+          powershell -command "Expand-Archive -Path 'D:\a\aspnetTestProject\aspnetTestProject\testzk\testzk\my-artifact.zip' -DestinationPath 'D:\a\aspnetTestProject\aspnetTestProject\testzk\testzk\'"
+      
+          # Copy the artifact to the on-prem VM
+          xcopy /Y /I D:\a\aspnetTestProject\aspnetTestProject\testzk\testzk\* D:\
+      
+          # Clean up by deleting the mapped drive
+          net use D: /delete
