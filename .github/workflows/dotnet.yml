@@ -41,23 +41,29 @@ jobs:
         uses: actions/download-artifact@v4
         with:
            name: publish
-           path: C:/Users/zaheeruddin/Downloads/myartifact.zip
-           
+           path: ./myartifact
+
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest  # Change to Windows since you're deploying to IIS
     needs: build-and-publish
 
-    steps:        
-       - name: Deploy to IIS
-         uses: ChristopheLav/iis-deploy@v4
-         with:
-          website-name: 'YourWebsite'
-          msdeploy-service-url: ${{ secrets.IIS_SERVER_IP }}
-          msdeploy-username: ${{ secrets.IIS_SERVER_PASSWORD }}  # Your username secret
-          msdeploy-password: ${{ secrets.IIS_SERVER_USER }}  # Your password secret
-          source-path: "./publish/*"
-          
-       - name: Restart IIS
-         run: |
-          Invoke-Expression -Command "Restart-WebAppPool -Name 'DefaultAppPool'" # Change app pool name
-         shell: pwsh
+    steps:
+    - name: Download Publish Artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: publish
+        path: ./publish  # This should match where your artifacts are stored
+
+    - name: Deploy to IIS
+      uses: ChristopheLav/iis-deploy@v4
+      with:
+        website-name: 'TestProject'
+        msdeploy-service-url: ${{ secrets.IIS_SERVER_IP }}  # URL should include the port if needed
+        msdeploy-username: ${{ secrets.IIS_SERVER_USER }}  # Correct the order of username and password
+        msdeploy-password: ${{ secrets.IIS_SERVER_PASSWORD }}  # Correct the order of username and password
+        source-path: "./publish/"  # Ensure this path is correct
+
+    - name: Restart IIS
+      run: |
+        Restart-WebAppPool -Name 'DefaultAppPool'  # Change app pool name as necessary
+      shell: pwsh     
