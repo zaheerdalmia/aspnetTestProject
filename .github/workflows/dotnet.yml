@@ -50,5 +50,5 @@ jobs:
       - name: Publish to on-prem VM
         run: |
           net use D: \\10.100.66.18\artifacts /user:${{ secrets.IIS_SERVER_USER }} ${{ secrets.IIS_SERVER_PASSWORD }}
-          xcopy /Y /I testzk/testzk/my-artifact.zip Z:\
+          xcopy /Y /I  D:\a\aspnetTestProject\aspnetTestProject\testzk\testzk\my-artifact.zip Z:\
           net use D: /delete  
