@@ -1,0 +1,69 @@
+name: Publish Code
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '6.0.x'
+          
+      - name: Restore
+        run: dotnet restore testzk/testzk.csproj
+        
+      - name: Build
+        run: dotnet build testzk/testzk.csproj --configuration Release --no-restore
+                 
+      - name: Publish
+        run: dotnet publish testzk/testzk.csproj  --configuration Release --no-build --output ./publish 
+        
+      - name: List directory contents
+        run: ls -R ./publish  # Optional: List files in the publish directory for debugging
+               
+      - name: Upload publish artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: publish
+          path: ./publish  
+       
+      - name: List Published Files
+        run: dir ./publish
+
+      - name: Download Publish Artifacts
+        uses: actions/download-artifact@v4
+        with:
+           name: publish
+           path: ./myartifact
+
+  deploy:
+    runs-on: windows-latest  # Change to Windows since you're deploying to IIS
+    needs: build-and-publish
+
+    steps:
+    - name: Download Publish Artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: publish
+        path: ./publish  # This should match where your artifacts are stored
+
+    - name: Deploy to IIS
+      uses: actions/download-artifact@v4  # or the correct tag/version
+      with:
+        website-name: 'TestProject'
+        msdeploy-service-url: ${{ secrets.IIS_SERVER_IP }}  # URL should include the port if needed
+        msdeploy-username: ${{ secrets.IIS_SERVER_USER }}  # Correct the order of username and password
+        msdeploy-password: ${{ secrets.IIS_SERVER_PASSWORD }}  # Correct the order of username and password
+        source-path: "./publish/"  # Ensure this path is correct
+
+    - name: Restart IIS
+      run: |
+        Restart-WebAppPool -Name 'DefaultAppPool'  # Change app pool name as necessary
+      shell: pwsh     
