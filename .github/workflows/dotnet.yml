@@ -38,9 +38,10 @@ jobs:
         run: dir ./publish
 
       - name: Download Publish Artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
            name: publish
+           path: C:/Users/zaheeruddin/Downloads
            
   deploy:
     runs-on: ubuntu-latest
