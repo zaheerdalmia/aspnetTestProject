@@ -35,16 +35,12 @@ jobs:
           path: ./publish  
        
       - name: List Published Files
-        run: dir ./publish
-        
-  download:
-      runs-on: windows-latest
-      needs: build-and-publish      
-      steps:
-        - name: Download Publish Artifacts
-          uses: actions/download-artifact@v3
-          with:
-            name: publish
+        run: dir ./publish       
+  
+      - name: Download Publish Artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: publish
         
   deploy:
     runs-on: ubuntu-latest
