@@ -49,13 +49,13 @@ jobs:
 
     steps:
     - name: Download Publish Artifacts
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: publish
         path: ./publish  # This should match where your artifacts are stored
 
     - name: Deploy to IIS
-      uses: ChristopheLav/iis-deploy@v3
+      uses: rpa-admin/TestProject@v4
       with:
         website-name: 'TestProject'
         msdeploy-service-url: ${{ secrets.IIS_SERVER_IP }}  # URL should include the port if needed
