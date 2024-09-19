@@ -5,7 +5,7 @@ on:
       - main
 
 jobs:
-  build-and-publish:
+  build:
     runs-on: ubuntu-latest
     
     steps:
@@ -26,8 +26,13 @@ jobs:
         run: dotnet publish testzk/testzk.csproj  --configuration Release --no-build --output ./publish 
         
       - name: List directory contents
-        run: ls -R ./publish  # Optional: List files in the publish directory for debugging
-               
+        run: ls -R ./publish  # Optional: List files in the publish directory for debugging      
+
+  publish:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:   
       - name: Upload publish artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -35,18 +40,21 @@ jobs:
           path: ./publish  
        
       - name: List Published Files
-        run: dir ./publish  
-
+        run: dir ./publish 
+           
   artifacts:
     runs-on: ubuntu-latest
-    needs: build-and-publish
+    needs: publish
 
     steps:   
-       - name: Download Publish Artifacts
-         uses: actions/download-artifact@v3
-         with:
-           name: publish  # Make sure this matches the upload name
-           path: ./myartifact.zip  # Specify the output path for the artifact
+      - name: Upload publish artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: publish
+          path: ./publish  
+       
+      - name: List Published Files
+        run: dir ./publish 
            
   deploy:
     runs-on: ubuntu-latest
