@@ -35,15 +35,31 @@ jobs:
           path: ./publish  
        
       - name: List Published Files
-        run: dir ./publish  
-        
+        run: dir ./publish
+
+  download:
+    runs-on: windows-latest
+    needs: build-and-publish      
+    steps:
+      - name: Download Publish Artifacts
+        uses: actions/download-artifact@v3
+        with:
+           name: publish
+           path: testzk/testzk.csproj/my-artifact.zip
+
+      - name: Publish to on-prem VM
+        run: |
+          net use D: \\10.100.66.18\artifacts /user:${{ secrets.IIS_SERVER_USER }} ${{ secrets.IIS_SERVER_PASSWORD }}
+          xcopy /Y /I build/output/my-artifact.zip Z:\
+          net use D: /delete
+     
   deploy:
     runs-on: ubuntu-latest
     needs: build-and-publish
 
     steps:        
        - name: Deploy to IIS
-         uses: ChristopheLav/iis-deploy@v1
+         uses: ChristopheLav/iis-deploy@v4
          with:
           website-name: 'YourWebsite'
           msdeploy-service-url: ${{ secrets.IIS_SERVER_IP }}
