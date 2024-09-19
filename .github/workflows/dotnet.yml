@@ -26,33 +26,20 @@ jobs:
     runs-on: ubuntu-latest
     needs: build 
     steps:            
-      - name: Publish
-        run: dotnet publish testzk/testzk.csproj  --configuration Release --no-build --output ./publish 
-        
       - name: List directory contents
-        run: ls -R ./publish  # Optional: List files in the publish directory for debugging
+        run: ls -R  # Check the file structure
+
+      - name: Publish
+        run: dotnet publish testzk/testzk.csproj --configuration Release --no-build --output ./publish 
+        
+      - name: List Published Files
+        run: ls ./publish  # Verify the contents of the publish directory
                
       - name: Upload publish artifacts
         uses: actions/upload-artifact@v3
         with:
           name: publish
           path: ./publish  
-       
-      - name: List Published Files
-        run: dir ./publish
-        
-  artifacts:
-    runs-on: ubuntu-latest
-    needs: publish 
-    steps:    
-      - name: Upload publish artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: publish
-          path: ./publish  
-       
-      - name: List Published Files
-        run: dir ./publish
         
   deploy:
     runs-on: windows-latest
@@ -61,26 +48,26 @@ jobs:
       - name: Download Publish Artifacts
         uses: actions/download-artifact@v3
         with:
-           name: publish
-           path: testzk/testzk/myartifact.zip
+          name: publish
+          path: ./myartifact.zip  # Specify the output path for the artifact
 
       - name: Publish to on-prem VM
         run: |
           net use D: \\10.100.66.18\artifacts /user:${{ secrets.IIS_SERVER_USER }} ${{ secrets.IIS_SERVER_PASSWORD }}
           
           # Check if the artifact exists
-          if exist D:\a\aspnetTestProject\aspnetTestProject\testzk\testzk\myartifact.zip 
-          ( echo "Artifact exists"
+          if exist D:\myartifact.zip (
+            echo "Artifact exists"
           ) else (
             echo "Artifact does not exist"
             exit 1
           )
       
           # Extract the Artifact
-          powershell -command "Expand-Archive -Path 'D:\a\aspnetTestProject\aspnetTestProject\testzk\testzk\myartifact.zip' -DestinationPath 'D:\artifacts\'"
+          powershell -command "Expand-Archive -Path 'D:\myartifact.zip' -DestinationPath 'D:\artifacts\'"
       
           # Copy the artifact to the on-prem VM
-          xcopy /Y /I D:\a\aspnetTestProject\aspnetTestProject\testzk\testzk\myartifact.zip* D:\artifacts
+          xcopy /Y /I D:\artifacts\* D:\artifacts
       
           # Clean up by deleting the mapped drive
           net use D: /delete
