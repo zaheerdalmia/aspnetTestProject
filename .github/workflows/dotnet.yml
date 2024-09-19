@@ -55,7 +55,7 @@ jobs:
         path: ./publish  # This should match where your artifacts are stored
 
     - name: Deploy to IIS
-      uses: aspnetTestProject/testzk@v4
+      uses: aspnettestproject/testzk@main  # or the correct tag/version
       with:
         website-name: 'TestProject'
         msdeploy-service-url: ${{ secrets.IIS_SERVER_IP }}  # URL should include the port if needed
